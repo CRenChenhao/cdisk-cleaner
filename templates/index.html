@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C 盘清理工具</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v={{ cache_bust }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div id="app">
+    <!-- 顶部磁盘概览 -->
+    <div class="header">
+        <div class="header-left">
+            <h1><i class="fa-solid fa-hard-drive"></i> C 盘清理工具 <span class="version-badge">{{ app_version }}</span></h1>
+            <p class="subtitle">一键扫描清理，释放 C 盘空间</p>
+        </div>
+    </div>
+
+    <!-- 磁盘仪表盘 -->
+    <div class="disk-dashboard">
+        <div class="gauge-container">
+            <div class="gauge">
+                <svg viewBox="0 0 200 120" width="200" height="120">
+                    <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#2a2a3e" stroke-width="16" stroke-linecap="round"/>
+                    <path id="gaugeArc" d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#ff6b6b" stroke-width="16" stroke-linecap="round" stroke-dasharray="251.3" stroke-dashoffset="251.3"/>
+                </svg>
+                <div class="gauge-text">
+                    <div id="usedPct" class="gauge-pct">--</div>
+                    <div class="gauge-label">已使用</div>
+                </div>
+            </div>
+            <div class="disk-stats">
+                <div class="stat-item">
+                    <span class="stat-label">总容量</span>
+                    <span id="totalSize" class="stat-value">--</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">已用</span>
+                    <span id="usedSize" class="stat-value used">--</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">可用</span>
+                    <span id="freeSize" class="stat-value free">--</span>
+                </div>
+                <div class="stat-item highlight">
+                    <span class="stat-label">可清理</span>
+                    <span id="cleanableSize" class="stat-value cleanable">扫描中...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 操作栏 -->
+    <div class="action-bar">
+        <button class="btn-primary btn-scan" onclick="startScan()" id="scanBtn">
+            <i class="fa-solid fa-magnifying-glass"></i> 扫描可清理项
+        </button>
+        <button class="btn-danger btn-clean-all" onclick="cleanAll()" id="cleanAllBtn" disabled>
+            <i class="fa-solid fa-broom"></i> 一键清理安全项
+        </button>
+        <button class="btn-primary btn-clean-selected" onclick="cleanSelected()" id="cleanSelectedBtn" disabled>
+            <i class="fa-solid fa-eraser"></i> 清理选中项
+        </button>
+        <div class="select-info">
+            <span id="selectInfo">未选择</span>
+        </div>
+    </div>
+
+    <!-- 扫描进度条 -->
+    <div id="scanProgress" class="progress-bar-container" style="display:none;">
+        <div class="progress-info">
+            <span id="scanStatus">正在扫描...</span>
+        </div>
+        <div class="progress-bar-track">
+            <div id="scanProgressBar" class="progress-bar-fill"></div>
+        </div>
+    </div>
+
+    <!-- 清理目标列表 -->
+    <div id="targetsList" class="targets-list">
+        <div class="empty-state">
+            <i class="fa-solid fa-clipboard-list"></i>
+            <p>点击「扫描可清理项」开始检测</p>
+        </div>
+    </div>
+
+    <!-- 清理进度弹窗 -->
+    <div id="cleanModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h2><i class="fa-solid fa-broom"></i> 正在清理...</h2>
+            <div id="cleanLog" class="clean-log"></div>
+            <div class="modal-progress">
+                <div id="cleanProgressText" class="progress-text">准备中...</div>
+                <div class="progress-bar-track">
+                    <div id="cleanProgressBar" class="progress-bar-fill" style="width:0%;"></div>
+                </div>
+            </div>
+            <div id="cleanResult" class="clean-result" style="display:none;">
+                <div class="result-freed">
+                    <i class="fa-solid fa-circle-check"></i>
+                    清理完成！共释放 <span id="totalFreed">0</span>
+                </div>
+                <button class="btn-primary" onclick="closeModal()">完成</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部 -->
+    <div class="footer">
+        <p>仅清理安全可删除的缓存和临时文件，不会删除系统关键文件</p>
+        <p class="signature">灏灏出品，必属精品！</p>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='app.js') }}?v={{ cache_bust }}"></script>
+</body>
+</html>
