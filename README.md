@@ -58,7 +58,7 @@
 
 | 版本 | 下载 | 说明 |
 |------|------|------|
-| v2.0 | [C盘清理工具v2.0.exe](https://github.com/CRenChenhao/cdisk-cleaner/releases/latest) | 最新版本，支持占用分析 |
+| v2.0 | [C盘清理工具v2.0.exe](https://github.com/CRenChenhao/cdisk-cleaner/releases/latest) | 最新版本，暗黑主题无广告 |
 
 - **系统要求**：Windows 10 / 11（64 位）
 - **运行方式**：双击运行，自动请求管理员权限
