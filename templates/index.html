@@ -103,6 +103,15 @@
                 </div>
                 <button class="btn-primary" onclick="closeModal()">完成</button>
             </div>
+            <div id="donationSection" class="donation-section" style="display:none;">
+                <div class="donation-text">工具免费，如果觉得好用，欢迎支持一杯咖啡 ☕</div>
+                <div class="donation-btns">
+                    <div class="donation-item" onclick="openRewardLightbox()">
+                        <img id="rewardImg" src="{{ url_for('static', filename='images/reward.jpg') }}" alt="微信赞赏码" onerror="this.style.display='none'">
+                        <div class="donation-label">微信赞赏</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -110,6 +119,15 @@
     <div class="footer">
         <p>仅清理安全可删除的缓存和临时文件，不会删除系统关键文件</p>
         <p class="signature">灏灏出品，必属精品！</p>
+    </div>
+</div>
+
+<!-- 赞赏码放大查看 -->
+<div id="rewardLightbox" class="lightbox" style="display:none;" onclick="closeRewardLightbox()">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+        <img src="{{ url_for('static', filename='images/reward.jpg') }}" alt="微信赞赏码" onerror="this.style.display='none'">
+        <p class="lightbox-tip">微信扫码赞赏，支持开发者持续更新</p>
+        <button class="btn-primary btn-done" onclick="closeRewardLightbox()"><i class="fa-solid fa-xmark"></i> 关闭</button>
     </div>
 </div>
 

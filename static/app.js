@@ -6,10 +6,8 @@ let isCleaning = false;
 
 // ============ API 调用 ============
 async function api(url, options = {}) {
-    const resp = await fetch(url, {
-        ...options,
-        signal: AbortSignal.timeout(300000)  // 5 分钟超时，适应 DISM/大目录清理
-    });
+    // 扫描/清理可能耗时较长，取消整体超时，由后端各子任务自行控制超时
+    const resp = await fetch(url, options);
     return resp.json();
 }
 
@@ -327,6 +325,12 @@ async function cleanSelected() {
     `;
     resultDiv.style.display = 'block';
 
+    // 显示捐赠入口（清理完成即显示）
+    const donationSection = document.getElementById('donationSection');
+    if (donationSection && totalActuallyFreed > 0) {
+        donationSection.style.display = 'block';
+    }
+
     // 刷新磁盘信息
     await loadDiskInfo();
 
@@ -336,8 +340,19 @@ async function cleanSelected() {
 // ============ 关闭弹窗 ============
 function closeModal() {
     document.getElementById('cleanModal').style.display = 'none';
+    // 隐藏捐赠入口
+    const donationSection = document.getElementById('donationSection');
+    if (donationSection) donationSection.style.display = 'none';
     // 重新扫描
     startScan();
+}
+
+// ============ 放大赞赏码 ============
+function openRewardLightbox() {
+    document.getElementById('rewardLightbox').style.display = 'flex';
+}
+function closeRewardLightbox() {
+    document.getElementById('rewardLightbox').style.display = 'none';
 }
 
 // ============ 退出应用 ============
